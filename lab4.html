@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Texto con Inversión</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <label for="textInput">Ingrese un Texto:</label>
+        <input type="text" id="textInput" />
+    </div>
+    <p>Texto invertido: <span id="reversedText"></span></p>
+
+    <script>
+        (function() {
+            // Módulo de lógica de inversión
+            const textInversionModule = (function() {
+                // Función que invierte el texto
+                function reverseText(text) {
+                    return text.split('').reverse().join('');
+                }
+
+                return {
+                    reverseText
+                };
+            })();
+
+            // Módulo de interacción con la interfaz
+            const uiModule = (function() {
+                const textInput = document.getElementById('textInput');
+                const reversedTextSpan = document.getElementById('reversedText');
+
+                // Función que actualiza el span con el texto invertido
+                function updateReversedText() {
+                    const inputValue = textInput.value;
+                    const reversedText = textInversionModule.reverseText(inputValue);
+                    reversedTextSpan.textContent = reversedText;
+                }
+
+                // Vinculación del evento "input" para actualizar el span en tiempo real
+                function initEventListeners() {
+                    textInput.addEventListener('input', updateReversedText);
+                }
+
+                // Inicialización del módulo
+                function init() {
+                    initEventListeners();
+                }
+
+                return {
+                    init
+                };
+            })();
+
+            // Inicializamos la aplicación
+            uiModule.init();
+        })();
+    </script>
+</body>
+</html>
