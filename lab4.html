@@ -19,7 +19,13 @@
         <label for="textInput">Ingrese un Texto:</label>
         <input type="text" id="textInput" />
     </div>
-    <p>Texto invertido: <span id="reversedText"></span></p>
+
+    <div class="container">
+        <label for="colorPicker">Seleccione el Color del Texto Invertido:</label>
+        <input type="color" id="colorPicker" value="#000000" />
+    </div>
+
+    <p>Texto invertido: <span id="reversedText" style="color: #000000;"></span></p>
 
     <script>
         (function() {
@@ -39,6 +45,7 @@
             const uiModule = (function() {
                 const textInput = document.getElementById('textInput');
                 const reversedTextSpan = document.getElementById('reversedText');
+                const colorPicker = document.getElementById('colorPicker');
 
                 // Función que actualiza el span con el texto invertido
                 function updateReversedText() {
@@ -47,9 +54,16 @@
                     reversedTextSpan.textContent = reversedText;
                 }
 
-                // Vinculación del evento "input" para actualizar el span en tiempo real
+                // Actualiza el color del texto invertido
+                function updateTextColor() {
+                    const selectedColor = colorPicker.value;
+                    reversedTextSpan.style.color = selectedColor;
+                }
+
+                // Vinculación de eventos para actualizar el texto con el color
                 function initEventListeners() {
                     textInput.addEventListener('input', updateReversedText);
+                    colorPicker.addEventListener('input', updateTextColor);
                 }
 
                 // Inicialización del módulo
