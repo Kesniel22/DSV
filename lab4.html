@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulario de Texto con Inversión</title>
+    <title>Formulario de Texto con Inversión y Cambio de Color</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -11,6 +11,9 @@
         }
         .container {
             margin-bottom: 20px;
+        }
+        #reversedText {
+            color: black; /* Color por defecto del texto invertido */
         }
     </style>
 </head>
@@ -21,11 +24,19 @@
     </div>
 
     <div class="container">
-        <label for="colorPicker">Seleccione el Color del Texto Invertido:</label>
-        <input type="color" id="colorPicker" value="#000000" />
+        <label for="colorSelect">Seleccione el Color del Texto Invertido:</label>
+        <select id="colorSelect">
+            <option value="black">Negro</option>
+            <option value="red">Rojo</option>
+            <option value="blue">Azul</option>
+            <option value="green">Verde</option>
+            <option value="purple">Morado</option>
+        </select>
     </div>
 
-    <p>Texto invertido: <span id="reversedText" style="color: #000000;"></span></p>
+    <div>
+        <p>Texto invertido: <span id="reversedText"></span></p>
+    </div>
 
     <script>
         (function() {
@@ -35,35 +46,25 @@
                 function reverseText(text) {
                     return text.split('').reverse().join('');
                 }
-
                 return {
                     reverseText
                 };
             })();
 
-            // Módulo de interacción con la interfaz
-            const uiModule = (function() {
-                const textInput = document.getElementById('textInput');
+            // Módulo de cambio de color
+            const colorChangeModule = (function() {
+                const colorSelect = document.getElementById('colorSelect');
                 const reversedTextSpan = document.getElementById('reversedText');
-                const colorPicker = document.getElementById('colorPicker');
 
-                // Función que actualiza el span con el texto invertido
-                function updateReversedText() {
-                    const inputValue = textInput.value;
-                    const reversedText = textInversionModule.reverseText(inputValue);
-                    reversedTextSpan.textContent = reversedText;
-                }
-
-                // Actualiza el color del texto invertido
-                function updateTextColor() {
-                    const selectedColor = colorPicker.value;
+                // Función que cambia el color solo del texto invertido
+                function changeColor() {
+                    const selectedColor = colorSelect.value;
                     reversedTextSpan.style.color = selectedColor;
                 }
 
-                // Vinculación de eventos para actualizar el texto con el color
+                // Vinculación del evento "change" para cambiar el color del texto invertido
                 function initEventListeners() {
-                    textInput.addEventListener('input', updateReversedText);
-                    colorPicker.addEventListener('input', updateTextColor);
+                    colorSelect.addEventListener('change', changeColor);
                 }
 
                 // Inicialización del módulo
@@ -76,8 +77,36 @@
                 };
             })();
 
-            // Inicializamos la aplicación
+            // Módulo de interacción con la interfaz
+            const uiModule = (function() {
+                const textInput = document.getElementById('textInput');
+                const reversedTextSpan = document.getElementById('reversedText');
+
+                // Función que actualiza el span con el texto invertido
+                function updateReversedText() {
+                    const inputValue = textInput.value;
+                    const reversedText = textInversionModule.reverseText(inputValue);
+                    reversedTextSpan.textContent = reversedText;
+                }
+
+                // Vinculación del evento "input" para actualizar el span en tiempo real
+                function initEventListeners() {
+                    textInput.addEventListener('input', updateReversedText);
+                }
+
+                // Inicialización del módulo
+                function init() {
+                    initEventListeners();
+                }
+
+                return {
+                    init
+                };
+            })();
+
+            // Inicializamos todos los módulos
             uiModule.init();
+            colorChangeModule.init();
         })();
     </script>
 </body>
